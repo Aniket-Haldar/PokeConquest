@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PokéQuest Map</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="map" class="map"></div>
+
+  <!-- HUD Overlay -->
+  <div id="hud" class="glass-panel">
+    <div id="profile" class="profile-card">
+      <img src="images/trainer.png" alt="Trainer" id="trainer-avatar" />
+      <div>
+        <h3 id="trainer-name">Trainer: Ash</h3>
+        <p>Level: <span id="trainer-level">1</span></p>
+        <div id="xp-bar">
+          <div id="xp-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <button id="fetch-pokemon" onclick="loadNearbyPokemon()">🎯 Scan for Pokémon</button>
+    <div class="button-group">
+      <button onclick="window.location.href='challenge.html'">🏆 Challenges</button>
+      <button onclick="window.location.href='pokedex.html'">📖 Pokédex</button>
+    </div>
+
+    <div id="weather">🌦️ Loading weather...</div>
+  </div>
+  <!-- Catch Animation Overlay -->
+<div id="catch-animation" class="catch-overlay hidden">
+  <div id="pokeball-container">
+    <img src="../images/pokeball.png" id="pokeball" />
+  </div>
+  <div id="catch-message"></div>
+</div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="js/map.js"></script>
+</body>
+</html>
