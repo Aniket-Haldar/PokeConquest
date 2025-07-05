@@ -48,12 +48,16 @@ func main() {
 	frontendDir := "./frontend"
 	fs := http.FileServer(http.Dir(frontendDir))
 	router.PathPrefix("/").Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Explicit MIME types
+		// Set explicit MIME type
 		if strings.HasSuffix(r.URL.Path, ".js") {
 			w.Header().Set("Content-Type", "application/javascript")
 		} else if strings.HasSuffix(r.URL.Path, ".css") {
 			w.Header().Set("Content-Type", "text/css")
 		}
+
+		// Force browser cache for static files
+		w.Header().Set("Cache-Control", "public, max-age=31536000")
+
 		fs.ServeHTTP(w, r)
 	}))
 
