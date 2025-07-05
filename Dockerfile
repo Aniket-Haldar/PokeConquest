@@ -17,19 +17,20 @@ COPY . .
 RUN go build -o server .
 
 # Final stage
+# Final image
 FROM alpine:latest
 
 WORKDIR /app
 
-# Install certs for HTTPS
-RUN apk --no-cache add ca-certificates
+# Install certs & mime types for correct Content-Type headers
+RUN apk --no-cache add ca-certificates mime-types
 
-# Copy binary & frontend files
+# Copy built server binary and frontend
 COPY --from=builder /app/server .
 COPY frontend ./frontend
 
-# Expose port for Render
+# Expose port (Render uses $PORT env)
 EXPOSE 8080
 
-# Start server
+# Run the server
 CMD ["./server"]
