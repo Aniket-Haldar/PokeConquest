@@ -429,6 +429,22 @@ body.night-theme::before {
 #close-ai:hover {
   background: #e84118;
 }
+#toggle-voice {
+  background: #0074D9;
+  color: #fff;
+  font-size: 12px;
+  padding: 8px 15px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  font-family: 'Press Start 2P', cursive;
+}
+
+#toggle-voice:hover {
+  background: #0056b3;
+}
 
 .speech-bubble {
   background: #fff;

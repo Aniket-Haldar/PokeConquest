@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -15,7 +14,6 @@ func main() {
 	if err != nil {
 		log.Fatal("❌ Error loading .env file")
 	}
-	fmt.Println("Gemini API Key:", geminiAPIKey)
 
 	initDatabase()
 	SeedPokemon()
