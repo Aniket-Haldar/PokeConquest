@@ -23,7 +23,7 @@ FROM alpine:latest
 WORKDIR /app
 
 # Install certs & mime types for correct Content-Type headers
-RUN apk --no-cache add ca-certificates mime-types
+RUN apk --no-cache add ca-certificates 
 
 # Copy built server binary and frontend
 COPY --from=builder /app/server .
