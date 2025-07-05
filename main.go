@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -10,17 +11,21 @@ import (
 )
 
 func main() {
+	// Load environment variables
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("❌ Error loading .env file")
+		log.Println("⚠️  .env file not found. Using defaults.")
 	}
 
+	// Initialize DB and seed data
 	initDatabase()
 	SeedPokemon()
 
+	// Create router
 	router := mux.NewRouter()
-	api := router.PathPrefix("/api").Subrouter()
 
+	// API routes
+	api := router.PathPrefix("/api").Subrouter()
 	api.HandleFunc("/users", createUser).Methods("POST")
 	api.HandleFunc("/users/{id}", getUser).Methods("GET")
 	api.HandleFunc("/users/{id}/location", updateUserLocation).Methods("PUT")
@@ -38,15 +43,26 @@ func main() {
 	api.HandleFunc("/ai/tip", aiTipHandler).Methods("POST")
 	api.HandleFunc("/ai/strategy", aiStrategyHandler).Methods("POST")
 
+	// Serve frontend static files
+	frontendDir := "./frontend"
+	fs := http.FileServer(http.Dir(frontendDir))
+	router.PathPrefix("/").Handler(fs)
+
+	// Enable CORS
 	corsHandler := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),
 		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
 		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
 	)
 
-	port := ":8080"
-	log.Printf("🚀 Server running at http://localhost%s", port)
-	if err := http.ListenAndServe(port, corsHandler(router)); err != nil {
+	// Get port from env or default to 8080
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	log.Printf("🚀 Server running at http://localhost:%s", port)
+	if err := http.ListenAndServe(":"+port, corsHandler(router)); err != nil {
 		log.Fatal("❌ Server failed:", err)
 	}
 }

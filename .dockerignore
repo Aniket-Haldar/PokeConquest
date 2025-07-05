@@ -1,0 +1,18 @@
+# Go build cache
+/tmp
+/bin
+
+# Git
+.git
+.gitignore
+
+# Editor configs
+.vscode
+.idea
+
+# Node/npm
+node_modules
+
+# OS junk
+.DS_Store
+Thumbs.db

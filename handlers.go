@@ -297,9 +297,8 @@ func getNearbyTrainers(w http.ResponseWriter, r *http.Request) {
 
 // Helper: Haversine distance between two lat/lng
 // Load API Key from ENV
-var geminiAPIKey = os.Getenv("GEMINI_API_KEY")
 
-const geminiURL = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent"
+const geminiURL = "https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent"
 
 // Request & Response Structs
 type GeminiRequest struct {
@@ -374,29 +373,31 @@ func getGeminiResponse(prompt string) (string, error) {
 
 	return result.Candidates[0].Content.Parts[0].Text, nil
 }
+func trimText(text string, maxWords int) string {
+	words := bytes.Fields([]byte(text))
+	if len(words) <= maxWords {
+		return text
+	}
+	return string(bytes.Join(words[:maxWords], []byte(" "))) + "..."
+}
 
 func aiTipHandler(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Context string `json:"context"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]string{
-			"error": "Invalid JSON request",
-		})
+		http.Error(w, "Invalid JSON request", http.StatusBadRequest)
 		return
 	}
 
-	tip, err := getGeminiResponse(req.Context)
+	prompt := "Give a short and helpful tip (max 2 lines) about: " + req.Context
+	tip, err := getGeminiResponse(prompt)
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{
-			"error": fmt.Sprintf("AI error: %v", err),
-		})
+		http.Error(w, fmt.Sprintf("AI error: %v", err), http.StatusInternalServerError)
 		return
 	}
+
+	tip = trimText(tip, 60)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{
