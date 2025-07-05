@@ -50,22 +50,22 @@ func main() {
 	fs := http.FileServer(http.Dir(frontendDir))
 
 	router.PathPrefix("/").Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Set correct MIME types
-		if strings.HasSuffix(r.URL.Path, ".js") {
-			w.Header().Set("Content-Type", "application/javascript; charset=utf-8")
-		} else if strings.HasSuffix(r.URL.Path, ".css") {
-			w.Header().Set("Content-Type", "text/css; charset=utf-8")
-		} else if strings.HasSuffix(r.URL.Path, ".html") {
-			w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		} else if strings.HasSuffix(r.URL.Path, ".png") {
+		// Force correct MIME type for all static assets
+		switch {
+		case strings.HasSuffix(r.URL.Path, ".js"):
+			w.Header().Set("Content-Type", "application/javascript")
+		case strings.HasSuffix(r.URL.Path, ".css"):
+			w.Header().Set("Content-Type", "text/css")
+		case strings.HasSuffix(r.URL.Path, ".png"):
 			w.Header().Set("Content-Type", "image/png")
-		} else if strings.HasSuffix(r.URL.Path, ".gif") {
+		case strings.HasSuffix(r.URL.Path, ".gif"):
 			w.Header().Set("Content-Type", "image/gif")
+		case strings.HasSuffix(r.URL.Path, ".html"):
+			w.Header().Set("Content-Type", "text/html")
 		}
 		fs.ServeHTTP(w, r)
 	}))
 
-	// Enable CORS
 	corsHandler := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),
 		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
