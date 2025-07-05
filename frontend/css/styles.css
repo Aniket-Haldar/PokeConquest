@@ -392,6 +392,86 @@ body.night-theme::before {
   animation: starsTwinkle 4s ease-in-out infinite alternate;
   z-index: 0;
 }
+#ai-container {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Press Start 2P', cursive;
+  background: #fff;
+  border: 4px solid #ffcc00;
+  border-radius: 15px;
+  width: 400px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  z-index: 5000;
+}
+
+#ai-container.hidden {
+  display: none;
+}
+
+#close-ai {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #ff4757;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+}
+
+#close-ai:hover {
+  background: #e84118;
+}
+
+.speech-bubble {
+  background: #fff;
+  border: 3px solid #000;
+  padding: 15px;
+  border-radius: 10px;
+  position: relative;
+  width: 90%;
+  text-align: left;
+  font-size: 14px; /* 👈 increase text size */
+  line-height: 1.6; /* 👈 better spacing */
+  color: #2f3542; /* 👈 darker text for contrast */
+}
+#next-tip {
+  background: #ff0000;
+  color: #fff;
+  font-size: 14px;
+  padding: 10px 20px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  animation: pulse 1.5s infinite;
+}
+
+#open-ai {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #ffcc00;
+  color: #000;
+  font-family: 'Press Start 2P', cursive;
+  border: 2px solid #000;
+  border-radius: 8px;
+  padding: 10px 15px;
+  cursor: pointer;
+  z-index: 5000;
+}
+
+#open-ai:hover {
+  background: #ffdd33;
+}
+
 
 /* Animations */
 @keyframes sunRays {

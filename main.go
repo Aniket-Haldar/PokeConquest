@@ -1,14 +1,21 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("❌ Error loading .env file")
+	}
+	fmt.Println("Gemini API Key:", geminiAPIKey)
 
 	initDatabase()
 	SeedPokemon()
@@ -29,6 +36,9 @@ func main() {
 
 	api.HandleFunc("/health", healthCheck).Methods("GET")
 	api.HandleFunc("/catch", catchPokemon).Methods("POST")
+	api.HandleFunc("/trainers/nearby", getNearbyTrainers).Methods("GET")
+	api.HandleFunc("/ai/tip", aiTipHandler).Methods("POST")
+	api.HandleFunc("/ai/strategy", aiStrategyHandler).Methods("POST")
 
 	corsHandler := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),
