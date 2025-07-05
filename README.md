@@ -1,72 +1,134 @@
-# 🌏 Pokémon Adventure - Location-Based Catching Game
+# PokéConquest 🌍🎮
 
-An interactive Pokémon adventure game where players explore a real-world map, discover nearby Pokémon, and catch them with exciting animations. Built with **Go (Golang)** backend, **Leaflet.js** for maps, and public APIs for weather and location awareness.  
+A location-based scavenger hunt game where players explore the real world to catch Pokémon, complete challenges, and interact with nearby trainers — inspired by Pokémon Go!
+
+Built with **Go (Golang)** for the backend, **Vanilla HTML/CSS/JS** for the frontend, and **PostgreSQL** as the database.
 
 ---
 
 ## 🚀 Features
-- 🗺 **Map-Based Exploration** – Navigate a real-world map to find Pokémon.  
-- ⚡ **Animated Catching Mechanism** – Interactive animations for catching Pokémon.  
-- 📖 **Pokédex** – View all Pokémon you have caught with sprites and types.  
-- 🌦 **Live Weather Integration** – Weather affects Pokémon spawns (via OpenWeather API).  
-- 📍 **Location Awareness** – Shows player’s city and Points of Interest (POIs).  
-- 🏆 **Challenges** – Location-based tasks to earn XP and level up.  
-- 📊 **Progress Tracking** – XP bar, level, and distance traveled.  
+- 📍 **Location-aware gameplay** using browser geolocation
+- 🎯 Catch Pokémon around you
+- 🧑‍🤝‍🧑 View and interact with nearby trainers
+- 🌱 Level up & track XP
+- 🧠 Professor Oak’s AI tips (powered by OpenAI API)
+- 🌤 Dynamic weather system (OpenWeather API)
 
 ---
 
-## 🌐 Public APIs Used
-### 1️⃣ [PokéAPI](https://pokeapi.co/)  
-- Fetches Pokémon data (name, type, sprite images).  
-- Example: `https://pokeapi.co/api/v2/pokemon/25` returns data for Pikachu.  
+## 🛠 Tech Stack
 
-### 2️⃣ [OpenWeatherMap API](https://openweathermap.org/api)  
-- Retrieves live weather for player’s location.  
-- Example: `https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_KEY}`  
-
-### 3️⃣ [Nominatim API (OpenStreetMap)](https://nominatim.org/release-docs/develop/api/Search/)  
-- Converts GPS coordinates to human-readable addresses.  
-- Example: Reverse geocoding to get city name and landmarks.  
+| Component          | Technology        |
+|---------------------|--------------------|
+| Backend API         | Go (Golang)       |
+| Database            | PostgreSQL        |
+| Frontend            | HTML/CSS/JS       |
+| Mapping             | Leaflet.js + OpenStreetMap |
+| Weather API         | OpenWeather API   |
+| AI Tips             | OpenAI API        |
+| Hosting             | Render (Dockerized) |
 
 ---
 
-## 📂 Project Structure
+Visit: https://pokeconquest.onrender.com
 
-├── backend/ # Golang backend
-│ ├── main.go # Entry point
-│ ├── models.go # Models (User, Pokémon, etc.)
-│ ├── controllers.go # API handlers
-│ ├── database.go # DB initialization (PostgreSQL)
-│ ├── seed.go # Initial data seeding
-├── frontend/ # HTML/CSS/JS files
-│ ├── index.html # Main map UI
-│ ├── css/
-│ ├── js/
-│ ├── pokedex.html # Pokédex view
-├── README.md
-├── go.mod / go.sum # Golang dependencies
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Aniket-Haldar/pokemon-adventure.git
-   cd pokemon-adventure/backend
-2. **Configure PostgreSQL**
+## Appendix
 
-Create a database called pokequest.
 
-Update database.go with your DB credentials:
+│
+├── frontend/ # Frontend static files
+│ ├── index.html # Landing page
+│ ├── map.html # Map interface
+│ ├── js/ # JavaScript files
+│ │ ├── map.js # Map & gameplay logic
+│ │ └── ...
+│ ├── css/ # Stylesheets
+│ └── images/ # Game assets
+│
+├── go.mod # Go module definition
+├── main.go # Backend entrypoint
+├── database.go # Database connection & models
+├── controllers.go # API route handlers
+├── Dockerfile # Docker build config
+├── README.md # You are here 😉
+└── .env.example # Sample environment variables
+---
 
-dsn := "host=localhost user=postgres password=postgres dbname=pokequest port=5432 sslmode=disable"
-3. **Run the backend server**
+## ⚙️ API Endpoints
 
-go mod tidy
+### 👤 User
+| Method | Endpoint                          | Description                       |
+|--------|-------------------------------------|-------------------------------------|
+| POST   | `/api/users`                      | Create a new user                  |
+| GET    | `/api/users/{id}`                 | Get user profile                   |
+| PUT    | `/api/users/{id}/location`        | Update user’s location             |
+| GET    | `/api/users/{id}/gamestate`       | Get user’s game state              |
+
+### 🗺 Pokémon & Challenges
+| Method | Endpoint                          | Description                       |
+|--------|-------------------------------------|-------------------------------------|
+| GET    | `/api/pokemon/nearby?lat=&lng=`   | Get Pokémon near user’s location   |
+| POST   | `/api/catch?user_id=&pokemon_id=` | Attempt to catch a Pokémon         |
+| GET    | `/api/challenges`                 | Get available challenges           |
+| POST   | `/api/challenges/{id}/complete`   | Mark challenge as complete         |
+
+### 🌤 Environment
+| Method | Endpoint          | Description                 |
+|--------|---------------------|-----------------------------|
+| GET    | `/api/health`     | Health check (for Render)   |
+| GET    | `/api/locations/pois` | Get nearby points of interest |
+
+### 🧠 AI Tips
+| Method | Endpoint          | Description                 |
+|--------|---------------------|-----------------------------|
+| POST   | `/api/ai/tip`     | Get a gameplay tip           |
+| POST   | `/api/ai/strategy`| Get a strategy suggestion    |
+
+---
+
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+DATABASE_URL=postgres://pokeuser:pokepass@localhost:5432/pokequest
+OPENWEATHER_API_KEY=your_openweather_api_key
+OPENAI_API_KEY=your_openai_api_key
+
+## 🖥 Local Development
+
+### Prerequisites
+- [Go](https://golang.org/dl/) >= 1.19
+- [PostgreSQL](https://www.postgresql.org/) >= 13
+- [Node.js](https://nodejs.org/) (for frontend tweaks, optional)
+
+---
+
+### ⚡ Install & Run
+
+1️⃣ Clone the repo:
+```bash
+git clone https://github.com/your-username/pokeconquest.git
+cd pokeconquest
+
+
+cp .env.example .env
+
+
+DATABASE_URL=postgres://pokeuser:pokepass@localhost:5432/pokequest
+OPENWEATHER_API_KEY=your_openweather_api_key
+OPENAI_API_KEY=your_openai_api_key
+
+
+createdb pokequest
+
 go run main.go
-✅ Server starts on http://localhost:8080
+
+ Open http://localhost:8080 in your browser.
 
 
-Endpoint	Method	Description
-/api/users	POST	Create a new user
-/api/users/{id}	GET	Get user profile
-/api/pokemon/nearby?lat&lng	GET	Get nearby Pokémon spawns
-/api/catch?user_id&pokemon_id	POST	Catch a Pokémon
-/api/weather?lat&lng	GET	Get weather data for current location
+ docker build -t pokeconquest .
+docker run -p 8080:8080 pokeconquest
+
+```

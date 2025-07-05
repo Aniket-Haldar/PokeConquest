@@ -45,19 +45,23 @@ func main() {
 	api.HandleFunc("/ai/strategy", aiStrategyHandler).Methods("POST")
 
 	// Serve frontend static files
+	// Serve frontend static files
 	frontendDir := "./frontend"
 	fs := http.FileServer(http.Dir(frontendDir))
+
 	router.PathPrefix("/").Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Set explicit MIME type
+		// Set correct MIME types
 		if strings.HasSuffix(r.URL.Path, ".js") {
-			w.Header().Set("Content-Type", "application/javascript")
+			w.Header().Set("Content-Type", "application/javascript; charset=utf-8")
 		} else if strings.HasSuffix(r.URL.Path, ".css") {
-			w.Header().Set("Content-Type", "text/css")
+			w.Header().Set("Content-Type", "text/css; charset=utf-8")
+		} else if strings.HasSuffix(r.URL.Path, ".html") {
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		} else if strings.HasSuffix(r.URL.Path, ".png") {
+			w.Header().Set("Content-Type", "image/png")
+		} else if strings.HasSuffix(r.URL.Path, ".gif") {
+			w.Header().Set("Content-Type", "image/gif")
 		}
-
-		// Force browser cache for static files
-		w.Header().Set("Cache-Control", "public, max-age=31536000")
-
 		fs.ServeHTTP(w, r)
 	}))
 

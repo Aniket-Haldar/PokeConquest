@@ -1,33 +1,35 @@
 # Build stage
-FROM golang:1.24.3-alpine as builder
+FROM golang:1.24.3-alpine AS builder
 
 WORKDIR /app
 
-# Install git & ca-certs
+# Install git & certs
 RUN apk --no-cache add git ca-certificates
 
-# Copy go.mod and go.sum first
+# Copy go.mod and download dependencies
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy source
+# Copy source code
 COPY . .
 
-# Build the app
+# Build binary
 RUN go build -o server .
 
-# Final image
+# Final stage
 FROM alpine:latest
 
 WORKDIR /app
 
-# Copy certs & frontend
+# Install certs for HTTPS
 RUN apk --no-cache add ca-certificates
+
+# Copy binary & frontend files
 COPY --from=builder /app/server .
 COPY frontend ./frontend
 
-# Expose port (Render uses $PORT)
+# Expose port for Render
 EXPOSE 8080
 
-# Run the server
+# Start server
 CMD ["./server"]
