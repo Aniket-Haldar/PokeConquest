@@ -1,38 +1,37 @@
-# Stage 1: Build Go binary
-FROM golang:1.24.3-alpine AS builder
+# Build stage
+FROM golang:1.24.3-alpine as builder
 
 WORKDIR /app
 
-# Copy Go modules and download dependencies
+# Install git (if you use Go modules)
+RUN apk --no-cache add git
+
+# Copy go.mod and go.sum first
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy source code
+# Copy the source
 COPY . .
 
-# Build the Go binary
+# Build the Go app
 RUN go build -o server .
 
-# Stage 2: Minimal runtime image
+# Final image
 FROM alpine:latest
 
 WORKDIR /app
 
-# Install certificates (needed for HTTPS calls in Go)
+# Install certs for HTTPS
 RUN apk --no-cache add ca-certificates
 
-# Copy .env file into image
-COPY .env /app/.env
-
-
-# Copy built binary from builder stage
+# Copy built binary
 COPY --from=builder /app/server .
 
-# Copy frontend static files
+# Copy frontend files
 COPY frontend ./frontend
 
-# Expose API port
+# Expose port
 EXPOSE 8080
 
-# Run the Go server
+# Run the server
 CMD ["./server"]
