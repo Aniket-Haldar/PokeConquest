@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -46,7 +47,15 @@ func main() {
 	// Serve frontend static files
 	frontendDir := "./frontend"
 	fs := http.FileServer(http.Dir(frontendDir))
-	router.PathPrefix("/").Handler(fs)
+	router.PathPrefix("/").Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Explicit MIME types
+		if strings.HasSuffix(r.URL.Path, ".js") {
+			w.Header().Set("Content-Type", "application/javascript")
+		} else if strings.HasSuffix(r.URL.Path, ".css") {
+			w.Header().Set("Content-Type", "text/css")
+		}
+		fs.ServeHTTP(w, r)
+	}))
 
 	// Enable CORS
 	corsHandler := handlers.CORS(
