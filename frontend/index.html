@@ -3,17 +3,219 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PokéQuest</title>
+  <title>PokéQuest - Begin Your Journey</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Press Start 2P', cursive;
+      overflow: hidden;
+    }
+
+    /* Dynamic background */
+    body.day {
+      background: linear-gradient(to bottom, #87CEFA, #f5f7fa); /* Day sky */
+    }
+    body.night {
+      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364); /* Night sky */
+      color: #f1f1f1;
+    }
+
+    /* Decorative animated Pokéballs */
+    .pokeball {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: radial-gradient(circle at 50% 50%, #ffffff 50%, #ff0000 50%);
+      border: 3px solid #2f3542;
+      border-radius: 50%;
+      animation: floatPokeball 8s linear infinite;
+    }
+
+    .pokeball::before {
+      content: "";
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      width: 4px;
+      height: 4px;
+      background: #2f3542;
+      border-radius: 50%;
+    }
+
+    @keyframes floatPokeball {
+      0% {
+        transform: translateY(0) translateX(-50vw) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-30px) translateX(50vw) rotate(180deg);
+      }
+      100% {
+        transform: translateY(0) translateX(150vw) rotate(360deg);
+      }
+    }
+
+    .oak-container {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding-top: 60px;
+    }
+
+    .oak-sprite {
+      width: 150px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .dialogue-box {
+      background: rgba(255, 255, 255, 0.95);
+      border: 4px solid #2f3542;
+      border-radius: 10px;
+      margin: 20px auto;
+      width: 80%;
+      max-width: 500px;
+      padding: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      font-size: 14px;
+      color: #2f3542;
+    }
+
+    #typewriter {
+      min-height: 60px;
+    }
+
+    .input-container {
+      margin-top: 10px;
+    }
+
+    #username {
+      width: 70%;
+      padding: 8px;
+      border: 2px solid #2f3542;
+      border-radius: 6px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 12px;
+    }
+
+    #start-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: linear-gradient(145deg, #ff4757, #ff6b81);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    #start-btn:hover {
+      transform: scale(1.05);
+      background: linear-gradient(145deg, #e84118, #ff6b81);
+    }
+
+    .blinking {
+      margin-top: 12px;
+      color: #2f3542;
+      animation: blink 1s step-start infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <img src="assets/logo.png" alt="PokéQuest Logo" class="logo" />
-    <h1>Welcome to PokéQuest</h1>
-    <p>Catch Pokémon, explore locations, and complete challenges in your area!</p>
-    <input type="text" id="username" placeholder="Enter your trainer name" />
-    <button onclick="startGame()">Start Adventure</button>
+  <!-- Decorative Pokéballs floating -->
+  <div class="pokeball" style="top:20%; animation-delay: 0s;"></div>
+  <div class="pokeball" style="top:50%; animation-delay: 3s;"></div>
+  <div class="pokeball" style="top:70%; animation-delay: 6s;"></div>
+
+  <div class="oak-container">
+    <img src="../images/professor-oak.png" alt="Professor Oak" class="oak-sprite" />
+    <div class="dialogue-box">
+      <p id="typewriter"></p>
+      <div class="input-container" style="display:none;">
+        <input type="text" id="username" placeholder="Enter your trainer name" />
+        <button id="start-btn" onclick="startGame()">🎯 Begin Journey</button>
+        <p class="blinking">▶ Press Start to Begin ◀</p>
+      </div>
+    </div>
   </div>
-  <script src="js/main.js"></script>
+
+  <script>
+    // Typewriter effect for Professor Oak
+    const dialogueLines = [
+      "Hello there! 👋",
+      "Welcome to the world of PokéQuest!",
+      "My name is Oak. People call me the Pokémon Professor.",
+      "Before we begin… what’s your name, Trainer?"
+    ];
+    let currentLine = 0, charIndex = 0;
+    const typewriter = document.getElementById('typewriter');
+    const inputContainer = document.querySelector('.input-container');
+
+    function typeLine() {
+      if (charIndex < dialogueLines[currentLine].length) {
+        typewriter.textContent += dialogueLines[currentLine].charAt(charIndex);
+        charIndex++;
+        setTimeout(typeLine, 50);
+      } else {
+        currentLine++;
+        if (currentLine < dialogueLines.length) {
+          setTimeout(() => {
+            typewriter.textContent = "";
+            charIndex = 0;
+            typeLine();
+          }, 1000);
+        } else {
+          inputContainer.style.display = "block";
+        }
+      }
+    }
+
+    // API call for starting game
+    function startGame() {
+      const username = document.getElementById('username').value.trim();
+      if (!username) {
+        alert("Please enter your trainer name.");
+        return;
+      }
+      fetch("http://localhost:8080/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username })
+      })
+        .then(res => res.json())
+        .then(data => {
+          const userId = data.id;
+          localStorage.setItem("userId", userId);
+          localStorage.setItem("username", data.username);
+          alert(`Welcome, ${data.username}!`);
+          window.location.href = "map.html";
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Failed to create user.");
+        });
+    }
+
+    // Day/night background logic
+    window.onload = () => {
+      typeLine();
+      const hour = new Date().getHours();
+      document.body.classList.add((hour >= 6 && hour < 18) ? "day" : "night");
+    }
+  </script>
 </body>
 </html>

@@ -1,0 +1,122 @@
+body {
+  margin: 0;
+  font-family: 'Press Start 2P', cursive;
+  background: radial-gradient(circle at top, #1e272e, #0a0a0a);
+  color: #f1f1f1;
+}
+
+.pokedex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ff4757;
+  padding: 15px;
+  color: #fff;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+#search-bar {
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Press Start 2P', cursive;
+  width: 200px;
+}
+
+#return-map-btn {
+  background: #1e90ff;
+  border: none;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-family: 'Press Start 2P', cursive;
+  cursor: pointer;
+}
+
+#return-map-btn:hover {
+  background: #3742fa;
+}
+
+main {
+  padding: 20px;
+}
+
+#caught-count {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.pokedex-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.pokemon-card {
+  background: linear-gradient(145deg, #2f3542, #57606f);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.pokemon-card:hover {
+  transform: scale(1.05);
+}
+
+.pokemon-card img {
+  width: 100px;
+  height: 100px;
+}
+
+.pokemon-name {
+  font-size: 1rem;
+  margin: 10px 0;
+}
+
+.pokemon-type {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #1e90ff;
+  color: #fff;
+  margin: 2px;
+  font-size: 0.75rem;
+}
+
+.pokemon-stats {
+  margin-top: 10px;
+  font-size: 0.7rem;
+  color: #dfe4ea;
+}
+.pokemon-type {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  color: #fff;
+  margin: 4px 2px;
+  font-size: 0.75rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+.stat-bar {
+  flex: 1;
+  height: 6px;
+  background: #ecf0f1;
+  border-radius: 3px;
+  margin: 0 6px;
+  overflow: hidden;
+}
+
+.stat-fill {
+  height: 100%;
+  border-radius: 3px;
+}
+
+.pokemon-card:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}

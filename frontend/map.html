@@ -9,38 +9,49 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div id="map" class="map"></div>
+  <!-- Fullscreen Map -->
+  <div id="map"></div>
+<!-- Pokédex Button -->
+<a href=pokedex.html><button id="pokedex-btn" >📖 Pokédex</button></a>
 
-  <!-- HUD Overlay -->
-  <div id="hud" class="glass-panel">
-    <div id="profile" class="profile-card">
-      <img src="images/trainer.png" alt="Trainer" id="trainer-avatar" />
+  <!-- Trainer HUD (Glass Panel) -->
+  <div class="glass-panel">
+    <div class="profile-card">
+      <img src="../images/trainer.png" alt="Trainer" id="trainer-avatar" />
       <div>
-        <h3 id="trainer-name">Trainer: Ash</h3>
-        <p>Level: <span id="trainer-level">1</span></p>
+        <h2 id="trainer-name">Trainer: ???</h2>
+        <p id="trainer-level">Level: 0</p>
         <div id="xp-bar">
           <div id="xp-fill"></div>
         </div>
       </div>
     </div>
-
-    <button id="fetch-pokemon" onclick="loadNearbyPokemon()">🎯 Scan for Pokémon</button>
-    <div class="button-group">
-      <button onclick="window.location.href='challenge.html'">🏆 Challenges</button>
-      <button onclick="window.location.href='pokedex.html'">📖 Pokédex</button>
-    </div>
-
-    <div id="weather">🌦️ Loading weather...</div>
+    <div id="weather">🌦 Loading weather...</div>
+    <button id="fetch-pokemon" onclick="loadNearbyPokemon()">🎯 Find Pokémon</button>
   </div>
+
   <!-- Catch Animation Overlay -->
-<div id="catch-animation" class="catch-overlay hidden">
-  <div id="pokeball-container">
-    <img src="../images/pokeball.png" id="pokeball" />
+  <div id="catch-animation" class="catch-overlay hidden">
+    <div id="pokeball-container">
+      <img src="../images/pokeball.png" id="pokeball" />
+    </div>
+    <div id="catch-message"></div>
   </div>
-  <div id="catch-message"></div>
-</div>
 
+  <!-- ✅ Fixed Loading Overlay -->
+  <div id="loading-overlay" class="hidden">
+    <div class="loader">
+      <img src="../images/pokeball.png" class="spin" />
+      <p id="loading-text">Loading...</p> <!-- JS will replace this with random facts -->
+    </div>
+  </div>
+
+  <!-- Dark Mode Toggle -->
+  <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
+
+  <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <!-- Custom Map Logic -->
   <script src="js/map.js"></script>
 </body>
 </html>
