@@ -25,7 +25,7 @@ const typeColors = {
 
 async function loadPokedex() {
   try {
-    const res = await fetch(`http://localhost:8080/api/users/${userId}`);
+    const res = await fetch(`https://pokeconquest.onrender.com/api/users/${userId}`);
     if (!res.ok) throw new Error("Failed to fetch user data");
 
     const userData = await res.json();
